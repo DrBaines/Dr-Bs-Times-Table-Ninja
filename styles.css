@@ -29,7 +29,15 @@ body {
 .stack-mobile { gap: 20px; }
 .name-row { margin: 10px 0 20px; }
 
-.big-input { font-size:44px; padding:18px; width:520px; max-width:92vw; text-align:center; }
+/* Make the desktop/laptop answer box wider */
+.big-input,
+.answer-input {
+  font-size:44px;
+  padding:18px;
+  width:520px;        /* wider for laptop/desktop */
+  max-width:92vw;
+  text-align:center;
+}
 
 .big-button { font-size:28px; padding:16px 26px; cursor:pointer; border:2px solid #222; border-radius:10px; background:#fff; }
 .big-button.primary { background:#4caf50; color:#fff; border-color:#4caf50; }
@@ -41,7 +49,6 @@ body {
 /* ---------- Quiz container ---------- */
 #quiz-title { margin-top:10px; margin-bottom:20px; display:block; }
 .question { font-size: 100px; margin: 0; }  /* margin 0 so it never nudges rows */
-.answer-input { font-size: 100px; width: 340px; text-align: center; margin-top: 0; }
 .timer { font-size: 50px; margin-top: 30px; display:none !important; }
 .score { font-size: 40px; margin-top: 30px; }
 
@@ -72,7 +79,6 @@ body {
   row-gap: 0;
   text-align: left;            /* ⬅️ was "center" */
 }
-
 
 /* Place core elements into explicit rows */
 #question { 
@@ -363,8 +369,8 @@ html, body {
 
 /* Optional: briefly indicate which home choice was chosen */
 .big-button.primary.active-choice {
-  background: #2e7d32;  /* darker than normal primary */
-  border-color: #2e7d32;
+  background: #2e7d2;
+  border-color: #2e7d2;
   color: #fff;
 }
 .big-button.secondary.active-choice {
@@ -386,12 +392,53 @@ html, body {
   box-shadow: 0 8px 28px rgba(0,0,0,0.12);
 }
 
-/* iPad portrait widths (older iPad 768px, Air 820px, Pro 834px) */
-@media (hover: none) and (pointer: coarse) and (min-width: 700px) and (max-width: 900px) {
+/* iPad portrait: answer box big, keypad bottom */
+@media (hover: none) and (pointer: coarse) and (min-width: 700px) and (max-width: 900px) and (orientation: portrait) {
   .answer-input {
-    width: 600px;     /* wider box for iPad portrait */
-    max-width: 92vw;  /* prevent overflow on narrow viewports */
-    font-size: 84px;  /* optional: slightly smaller so longer numbers fit */
+    width: 600px;     /* narrower for portrait */
+    max-width: 98vw;
+    font-size: 84px;
+  }
+  #quiz-container {
+    padding-bottom: 360px;
+  }
+}
+
+/* iPad landscape: answer box to the right of the question and not under keypad */
+@media (hover: none) and (pointer: coarse) and (min-width: 900px) and (max-width: 1200px) and (orientation: landscape) {
+  .question-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: var(--qband-tablet) auto auto;
+    grid-template-areas:
+      "question answer"
+      "timer   timer";
+    align-items: center;
+    column-gap: 40px;
+    row-gap: 0;
+    text-align: left;
+    justify-items: start;
+  }
+  #question {
+    grid-area: question;
+    align-self: center;
+    justify-self: end;
+  }
+  #answer {
+    grid-area: answer;
+    align-self: center;
+    justify-self: start;
+  }
+  #timer {
+    grid-area: timer;
+  }
+  .answer-input {
+    width: 500px; /* wide enough for 8 digits, adjust as needed */
+    max-width: 40vw;
+    font-size: 70px;
+  }
+  #quiz-container {
+    padding-bottom: 0; /* not needed when input is not under keypad */
   }
 }
 
